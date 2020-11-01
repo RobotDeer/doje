@@ -21,7 +21,7 @@ config.json:
 
 {
     "prefix": "=",
-    "token": "<bot token here>",
-    "youtubeAPI": "<youtubeapi token here>",
-    "tenorAPI": "<tenorapi token here>"
+    "token": "bot token here",
+    "youtubeAPI": "youtubeapi token here",
+    "tenorAPI": "tenorapi token here"
   }
