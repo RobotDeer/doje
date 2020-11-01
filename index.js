@@ -40,7 +40,6 @@ client.registry
         ['stable',],
         ['experimental',],
         ['other'],
-        ['currency-database']
     ])
     .registerDefaultGroups({
         
@@ -52,6 +51,7 @@ client.registry
     .registerCommandsIn(path.join(__dirname, 'commands'));
 
     Reflect.defineProperty(currency, 'add', {
+        /* eslint-disable-next-line func-name-matching */
         value: async function add(id, amount) {
             const user = currency.get(id);
             if (user) {
@@ -63,8 +63,9 @@ client.registry
             return newUser;
         },
     });
-    //Helper methods
+    //alpha
     Reflect.defineProperty(currency, 'add', {
+        /* eslint-disable-next-line func-name-matching */
         value: async function add(id, amount) {
             const user = currency.get(id);
             if (user) {
@@ -78,6 +79,7 @@ client.registry
     });
     
     Reflect.defineProperty(currency, 'getBalance', {
+        /* eslint-disable-next-line func-name-matching */
         value: function getBalance(id) {
             const user = currency.get(id);
             return user ? user.balance : 0;
@@ -85,7 +87,7 @@ client.registry
     });
     //ready log and bot activity
     client.once('ready', async () => {
-        //Ready event data sync
+        //beta
         const storedBalances = await Users.findAll();
 storedBalances.forEach(b => currency.set(b.user_id, b));
         console.log(`Logged in as ${client.user.tag}! (${client.user.id})`);
@@ -103,11 +105,11 @@ storedBalances.forEach(b => currency.set(b.user_id, b));
         const [, command, commandArgs] = input.match(/(\w+)\s*([\s\S]*)/);
     
         if (command === 'balance') {
-            //Show user balance
+            // [gamma]
             const target = message.mentions.users.first() || message.author;
 return message.channel.send(`${target.tag} has ${currency.getBalance(target.id)} doje coin`);
         } else if (command === 'inventory') {
-            //Show user inventory
+            // [delta]
             const target = message.mentions.users.first() || message.author;
 const user = await Users.findOne({ where: { user_id: target.id } });
 const items = await user.getItems();
@@ -115,7 +117,7 @@ const items = await user.getItems();
 if (!items.length) return message.channel.send(`${target.tag} has nothing!`);
 return message.channel.send(`${target.tag} currently has ${items.map(i => `${i.amount} ${i.item.name}`).join(', ')}`);
         } else if (command === 'transfer') {
-            //Transfer currency to another user
+            // [epsilon]
             const currentAmount = currency.getBalance(message.author.id);
             const transferAmount = commandArgs.split(/ +/g).find(arg => !/<@!?\d+>/g.test(arg));
             const transferTarget = message.mentions.users.first();
@@ -129,7 +131,7 @@ return message.channel.send(`${target.tag} currently has ${items.map(i => `${i.a
             
             return message.channel.send(`Successfully transferred ${transferAmount} doje coin to ${transferTarget.tag}. Your current balance is ${currency.getBalance(message.author.id)} doje coin`);
         } else if (command === 'buy') {
-            //Buying an item
+            // [zeta]
             const item = await CurrencyShop.findOne({ where: { name: { [Op.like]: commandArgs } } });
 if (!item) return message.channel.send(`That item doesn't exist.`);
 if (item.cost > currency.getBalance(message.author.id)) {
@@ -142,11 +144,11 @@ await user.addItem(item);
 
 message.channel.send(`You've bought: ${item.name}.`);
         } else if (command === 'shop') {
-            //Display the shop
+            // [theta]
             const items = await CurrencyShop.findAll();
 return message.channel.send(items.map(item => `${item.name}: ${item.cost} doje coin`).join('\n'), { code: true });
         } else if (command === 'leaderboard') {
-            //Display the leaderboard
+            // [lambda]
             return message.channel.send(
                 currency.sort((a, b) => b.balance - a.balance)
                     .filter(user => client.users.cache.has(user.user_id))
