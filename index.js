@@ -1,15 +1,13 @@
     //require
+const { prefix, token } = require('./config.json');
 const Discord = require('discord.js');
 const { Structures } = require('discord.js');
 const { CommandoClient } = require('discord.js-commando');
 const path = require('path');
-const { prefix, token } = require('./config.json');
 const ytdl = require("ytdl-core");
-const { Users, CurrencyShop } = require('./dbObjects');
 const { Op } = require('sequelize');
-const PREFIX = '=';
+const { Users, CurrencyShop } = require('./dbObjects');
 const currency = new Discord.Collection();
-
 //extend guild
 Structures.extend('Guild', Guild => {
     class MusicGuild extends Guild {
@@ -28,7 +26,7 @@ Structures.extend('Guild', Guild => {
 
     //commando client
 const client = new CommandoClient({
-    commandPrefix: '=',
+    commandprefix: prefix,
     owner: '186641904937598976',
     invite: 'https://discord.gg/PS2kCwPBZV',
 });
@@ -40,7 +38,6 @@ client.registry
         ['stable',],
         ['experimental',],
         ['other'],
-        ['currency-database']
     ])
     .registerDefaultGroups({
         
@@ -97,8 +94,8 @@ storedBalances.forEach(b => currency.set(b.user_id, b));
         if (message.author.bot) return;
         currency.add(message.author.id, 1);
     
-        if (!message.content.startsWith(PREFIX)) return;
-        const input = message.content.slice(PREFIX.length).trim();
+        if (!message.content.startsWith(prefix)) return;
+        const input = message.content.slice(prefix.length).trim();
         if (!input.length) return;
         const [, command, commandArgs] = input.match(/(\w+)\s*([\s\S]*)/);
     
