@@ -15,6 +15,6 @@ module.exports = class hCommand extends Command {
 
     //run
     run(message) {
-        return message.say('h');
+        return message.say('reply');
     }
 };
