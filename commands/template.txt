@@ -13,6 +13,8 @@ module.exports = class hCommand extends Command {
         })
     };
 
-//code here
-
+    //run
+    run(message) {
+        return message.say('h');
+    }
 };
